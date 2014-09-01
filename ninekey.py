@@ -19,7 +19,13 @@ class Ninekey(Qt.QApplication):
         self.window.show()
 
         buttons = []
-        conf_file = open(os.path.expanduser("~/.config/ninekey/ninekey.conf"),"r")
+        if os.path.exists(os.path.expanduser("~/.config/ninekey/ninekey.conf")):
+            conf_file = open(os.path.expanduser("~/.config/ninekey/ninekey.conf"),"r")
+        elif os.path.exists(os.path.expanduser("~/.config/ninekey")):
+            conf_file = open(os.path.expanduser("~/.config/ninekey/ninekey.conf"),"w+")
+        else:
+            os.mkdir(os.path.expanduser("~/.config/ninekey/"))
+            conf_file = open(os.path.expanduser("~/.config/ninekey/ninekey.conf"),"w+")
 
         for i in range(0, 9):
             name = conf_file.readline()
