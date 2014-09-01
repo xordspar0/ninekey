@@ -6,8 +6,8 @@ A barebones hotkey/launcher application
 Dependencies
 ------------
 
-python3
-pyqt4
+* python3
+* pyqt4
 
 Configuration
 -------------
