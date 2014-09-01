@@ -29,10 +29,10 @@ class Ninekey(Qt.QApplication):
             buttons[i].setToolTip(buttons[i].command)
             buttons[i].resize(100, 100)
 
-        for x in range(0, 3):
-            for y in range(0, 3):
-                buttons[x*3 + y].move(100 * x, 100 * y)
-                buttons[x*3 + y].show()
+        for y in range(0, 3):
+            for x in range(0, 3):
+                buttons[x + y*3].move(100 * x, 100 * y)
+                buttons[x + y*3].show()
 
     def run_command(self):
         sender = self.sender()
