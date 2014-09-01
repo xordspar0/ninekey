@@ -1,0 +1,10 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Type=Application
+Name=Ninekey
+Comment=A simple launcher application
+Exec=ninekey
+Icon=ninekey
+Categories=Office;Utility;
+Name[en_US]=ninekey.desktop
