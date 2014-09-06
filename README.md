@@ -14,7 +14,7 @@ Configuration
 
 When you first run ninekey, an empty config file will be created in ~/.config/ninekey/ .
 
-Odd numbered lines are the names of the commands to launch. These names will bedisplayed on the buttons.
+Odd numbered lines are the names of the commands to launch. These names will be displayed on the buttons.
 Even numbered lines are the commands to run.
 
 For example:
