@@ -1,21 +1,23 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import sys
 import os
-from PyQt4 import Qt
-from PyQt4 import QtGui
+from PyQt5.QtWidgets import QApplication
+from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QPushButton
+from PyQt5.QtGui import QIcon
 
-class Ninekey(Qt.QApplication):
+class Ninekey(QApplication):
     def __init__(self, args):
-        Qt.QApplication.__init__(self, args)
+        QApplication.__init__(self, args)
         self.addWidgets()
         self.exec_()
 
     def addWidgets(self):
-        self.window = QtGui.QWidget()
+        self.window = QWidget()
         self.window.setFixedSize(300, 300)
         self.window.setWindowTitle("Ninekey")
-        self.window.setWindowIcon(QtGui.QIcon("ninekey.png"))
+        self.window.setWindowIcon(QIcon("ninekey.png"))
         self.window.show()
 
         buttons = []
@@ -29,9 +31,9 @@ class Ninekey(Qt.QApplication):
 
         for i in range(0, 9):
             name = conf_file.readline()
-            buttons.append(QtGui.QPushButton(name, self.window))
+            buttons.append(QPushButton(name, self.window))
             buttons[i].command = conf_file.readline()
-            self.connect(buttons[i], Qt.SIGNAL("clicked()"), self.run_command)
+            buttons[i].clicked.connect(self.runCommand)
             buttons[i].setToolTip(buttons[i].command)
             buttons[i].resize(100, 100)
 
@@ -40,7 +42,7 @@ class Ninekey(Qt.QApplication):
                 buttons[x + y*3].move(100 * x, 100 * y)
                 buttons[x + y*3].show()
 
-    def run_command(self):
+    def runCommand(self):
         sender = self.sender()
         os.system(sender.command)
 
