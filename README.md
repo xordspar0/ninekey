@@ -7,7 +7,7 @@ Dependencies
 ------------
 
 * python3
-* pyqt4
+* pyqt5
 
 Configuration
 -------------
