@@ -2,6 +2,9 @@
 
 import sys
 import os
+from multiprocessing import Process
+import subprocess
+import shlex
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import QPushButton
@@ -20,7 +23,6 @@ class Ninekey(QApplication):
         self.window.setWindowIcon(QIcon("ninekey.png"))
         self.window.show()
 
-        buttons = []
         if os.path.exists(os.path.expanduser("~/.config/ninekey/ninekey.conf")):
             conf_file = open(os.path.expanduser("~/.config/ninekey/ninekey.conf"),"r")
         elif os.path.exists(os.path.expanduser("~/.config/ninekey")):
@@ -29,22 +31,33 @@ class Ninekey(QApplication):
             os.mkdir(os.path.expanduser("~/.config/ninekey/"))
             conf_file = open(os.path.expanduser("~/.config/ninekey/ninekey.conf"),"w+")
 
-        for i in range(0, 9):
-            name = conf_file.readline()
-            buttons.append(QPushButton(name, self.window))
-            buttons[i].command = conf_file.readline()
-            buttons[i].clicked.connect(self.runCommand)
-            buttons[i].setToolTip(buttons[i].command)
-            buttons[i].resize(100, 100)
+        buttons = []
+        for i in range(9):
+            newButton = QPushButton(self.window)
+            newButton.resize(100, 100)
+            newButton.setText(conf_file.readline())
+            newButton.command = conf_file.readline()
+            if newButton.command:
+                newButton.clicked.connect(self.startProcess)
+                newButton.setToolTip(newButton.command)
+            else:
+                newButton.setDisabled(True)
+
+            buttons.append(newButton)
 
         for y in range(0, 3):
             for x in range(0, 3):
                 buttons[x + y*3].move(100 * x, 100 * y)
                 buttons[x + y*3].show()
 
-    def runCommand(self):
+    def startProcess(self):
         sender = self.sender()
-        os.system(sender.command)
+        commandProcess = Process(target=self.runCommand, args=(sender.command,))
+        commandProcess.start()
+
+    def runCommand(self, command):
+        subprocess.run(shlex.split(command))
+        
 
 if __name__ == "__main__":
     app = Ninekey(sys.argv)
