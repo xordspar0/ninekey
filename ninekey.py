@@ -17,20 +17,35 @@ class Ninekey(QApplication):
         self.exec_()
 
     def addWidgets(self):
+        appname = "ninekey"
+        apptitle = "Ninekey"
+
         self.window = QWidget()
         self.window.setFixedSize(300, 300)
-        self.window.setWindowTitle("Ninekey")
-        self.window.setWindowIcon(QIcon("ninekey.png"))
+        self.window.setWindowTitle(apptitle)
+        self.window.setWindowIcon(QIcon(appname + ".png"))
         self.window.show()
 
-        if os.path.exists(os.path.expanduser("~/.config/ninekey/ninekey.conf")):
-            conf_file = open(os.path.expanduser("~/.config/ninekey/ninekey.conf"),"r")
-        elif os.path.exists(os.path.expanduser("~/.config/ninekey")):
-            conf_file = open(os.path.expanduser("~/.config/ninekey/ninekey.conf"),"w+")
+        # Set up the config file.
+        if os.name == "posix":
+            conf_dir_path = "/".join([os.environ["HOME"], ".config", appname])
+            conf_file_path = "/".join([conf_dir_path, appname + ".conf"])
+        elif os.name == "nt":
+            conf_dir = "\\".join(["%APPDATA%", appname])
+            conf_file_path = "\\".join([conf_dir_path, appname + ".conf"])
         else:
-            os.mkdir(os.path.expanduser("~/.config/ninekey/"))
-            conf_file = open(os.path.expanduser("~/.config/ninekey/ninekey.conf"),"w+")
+            conf_dir = ""
+            conf_file_path = appname + ".conf"
+        
+        if not os.path.exists(conf_dir_path):
+            os.mkdir(conf_dir_path)
 
+        if os.path.exists(conf_file_path):
+            conf_file = open(conf_file_path,"r")
+        else:
+            conf_file = open(conf_file_path,"w+")
+
+        # Add the buttons.
         buttons = []
         for i in range(9):
             newButton = QPushButton(self.window)
@@ -50,6 +65,7 @@ class Ninekey(QApplication):
                 buttons[x + y*3].move(100 * x, 100 * y)
                 buttons[x + y*3].show()
 
+    # Spawn a new process that will run the command.
     def startProcess(self):
         sender = self.sender()
         commandProcess = Process(target=self.runCommand, args=(sender.command,))
