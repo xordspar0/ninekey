@@ -51,10 +51,10 @@ class Ninekey(QApplication):
             newButton = QPushButton(self.window)
             newButton.resize(100, 100)
             newButton.setText(conf_file.readline())
-            newButton.command = conf_file.readline()
+            newButton.command = shlex.split(conf_file.readline())
             if newButton.command:
                 newButton.clicked.connect(self.startProcess)
-                newButton.setToolTip(newButton.command)
+                newButton.setToolTip(' '.join(newButton.command))
             else:
                 newButton.setDisabled(True)
 
@@ -67,13 +67,8 @@ class Ninekey(QApplication):
 
     # Spawn a new process that will run the command.
     def startProcess(self):
-        sender = self.sender()
-        commandProcess = Process(target=self.runCommand, args=(sender.command,))
+        commandProcess = Process(target=subprocess.run, args=(self.sender().command,))
         commandProcess.start()
-
-    def runCommand(self, command):
-        subprocess.run(shlex.split(command))
-        
 
 if __name__ == "__main__":
     app = Ninekey(sys.argv)
