@@ -1,18 +1,16 @@
 #!/usr/bin/env python3
 
+from commandbutton import CommandButton
+
 import sys
 import os
-from multiprocessing import Process
-import subprocess
-import shlex
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtGui import QIcon
 
 class Ninekey(QApplication):
     def __init__(self, args):
-        QApplication.__init__(self, args)
+        super().__init__(args)
         self.addWidgets()
         self.exec_()
 
@@ -48,16 +46,9 @@ class Ninekey(QApplication):
         # Add the buttons.
         buttons = []
         for i in range(9):
-            newButton = QPushButton(self.window)
-            newButton.resize(100, 100)
-            newButton.setText(conf_file.readline())
-            newButton.command = shlex.split(conf_file.readline())
-            if newButton.command:
-                newButton.clicked.connect(self.startProcess)
-                newButton.setToolTip(' '.join(newButton.command))
-            else:
-                newButton.setDisabled(True)
-
+            label = conf_file.readline()
+            command = conf_file.readline()
+            newButton = CommandButton(self.window, label, command)
             buttons.append(newButton)
 
         for y in range(0, 3):
@@ -65,10 +56,5 @@ class Ninekey(QApplication):
                 buttons[x + y*3].move(100 * x, 100 * y)
                 buttons[x + y*3].show()
 
-    # Spawn a new process that will run the command.
-    def startProcess(self):
-        commandProcess = Process(target=subprocess.run, args=(self.sender().command,))
-        commandProcess.start()
-
 if __name__ == "__main__":
-    app = Ninekey(sys.argv)
+    Ninekey(sys.argv)
