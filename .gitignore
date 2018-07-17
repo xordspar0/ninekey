@@ -1,2 +1,6 @@
-__pycache__
+# Editor files
 *.swp
+
+# Python bytecode
+__pycache__
+*.pyc

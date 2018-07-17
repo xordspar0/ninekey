@@ -2,7 +2,6 @@
 
 from commandbutton import CommandButton
 
-import sys
 import os
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QWidget
@@ -55,6 +54,3 @@ class Ninekey(QApplication):
             for x in range(0, 3):
                 buttons[x + y*3].move(100 * x, 100 * y)
                 buttons[x + y*3].show()
-
-if __name__ == "__main__":
-    Ninekey(sys.argv)
