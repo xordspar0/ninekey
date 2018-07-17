@@ -1,4 +1,4 @@
-from commandbutton import CommandButton
+from ninekey.commandbutton import CommandButton
 
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QWidget

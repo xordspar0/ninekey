@@ -1,4 +1,4 @@
-from ninekey import Ninekey
+from ninekey.app import Ninekey
 
 import sys
 

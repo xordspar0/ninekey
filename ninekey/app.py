@@ -1,6 +1,4 @@
-#!/usr/bin/env python3
-
-from commandbutton import CommandButton
+from ninekey.commandbutton import CommandButton
 
 import os
 from PyQt5.QtWidgets import QApplication
